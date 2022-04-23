@@ -851,6 +851,11 @@ func (f *BlockFetcher) importBlocks(peer string, block *types.Block) {
 
 	// Run the import on a new thread
 	log.Debug("Importing propagated block", "peer", peer, "number", block.Number(), "hash", hash)
+	
+	if f.updatePeerStats != nil {
+		f.updatePeerStats(peer, "importBlocks")
+	}
+	
 	go func() {
 		defer func() { f.done <- hash }()
 
